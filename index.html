@@ -1,98 +1,285 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KajerBox - Free Online Tools</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#18243a}
-header{background:#172b4d;color:white;padding:24px 16px;text-align:center}
-header h1{font-size:32px;margin:8px}
-header p{color:#dbeafe}
-main{max-width:850px;margin:25px auto;padding:12px}
-.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.card{background:white;padding:20px;border-radius:14px;box-shadow:0 3px 15px #0001}
-.card h2{font-size:20px;color:#2456a6}
-input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccd5e1;border-radius:8px;font-size:16px}
-button{background:#2456a6;color:white;border:0;padding:12px 16px;border-radius:8px;cursor:pointer;font-size:15px;width:100%;margin-top:8px}
-.result{font-weight:bold;color:#087c52;margin-top:12px;overflow-wrap:anywhere}
-footer{text-align:center;padding:25px;color:#64748b}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kajerbox - Free Online Everyday Tools</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #1e293b;
+    }
+    header {
+      background-color: #2456a6;
+      color: white;
+      text-align: center;
+      padding: 25px 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    header p {
+      margin: 8px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-size: 20px;
+      color: #2456a6;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 5px 0 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    button {
+      width: 100%;
+      background: #2456a6;
+      color: white;
+      border: 0;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1d4485;
+    }
+    .result {
+      font-weight: bold;
+      color: #087c52;
+      margin-top: 15px;
+      font-size: 16px;
+      background: #ecfdf5;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+    }
+    #qrContainer {
+      text-align: center;
+      margin-top: 15px;
+      display: none;
+    }
+    #qrContainer img {
+      border: 1px solid #cbd5e1;
+      padding: 8px;
+      border-radius: 8px;
+      background: white;
+    }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-<header>
-<h1>🧰 KajerBox</h1>
-<p>Free Online Tools for Everyone</p>
-<p>সহজ অনলাইন টুলস, এক জায়গায়</p>
-</header>
-<main>
-<h2>Our Free Tools</h2>
-<div class="tools">
-<section class="card">
-<h2>🎂 Age Calculator</h2>
-<label>Date of Birth</label>
-<input type="date" id="dob">
-<button onclick="age()">Calculate Age</button>
-<div class="result" id="ageResult"></div>
-</section>
 
-<section class="card">
-<h2>⚖️ BMI Calculator</h2>
-<label>Weight (kg)</label>
-<input type="number" id="weight" placeholder="Enter weight">
-<label>Height (cm)</label>
-<input type="number" id="height" placeholder="Enter height">
-<button onclick="bmi()">Calculate BMI</button>
-<div class="result" id="bmiResult"></div>
-</section>
+  <header>
+    <h1>🧰 Kajerbox</h1>
+    <p>Free Online Tools for Everyday Use in Bangla & English</p>
+  </header>
 
-<section class="card">
-<h2>🔐 Password Generator</h2>
-<label>Password Length</label>
-<input type="number" id="length" value="12" min="8" max="64">
-<button onclick="password()">Generate Password</button>
-<div class="result" id="passResult"></div>
-<button onclick="copyPass()">Copy Password</button>
-</section>
-</div>
-</main>
-<footer>© 2026 KajerBox | All Rights Reserved</footer>
-<script>
-function age(){
-let d=document.getElementById('dob').value;
-if(!d){document.getElementById('ageResult').innerText='Select your birth date';return}
-let b=new Date(d+'T00:00:00'),t=new Date();
-if(b>t){document.getElementById('ageResult').innerText='Invalid date';return}
-let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),day=t.getDate()-b.getDate();
-if(day<0){m--;day+=new Date(t.getFullYear(),t.getMonth(),0).getDate()}
-if(m<0){y--;m+=12}
-document.getElementById('ageResult').innerText=y+' Years, '+m+' Months, '+day+' Days';
-}
-function bmi(){
-let w=Number(document.getElementById('weight').value);
-let h=Number(document.getElementById('height').value)/100;
-let r=document.getElementById('bmiResult');
-if(w<=0||h<=0){r.innerText='Enter valid measurements';return}
-let v=w/(h*h);
-let category=v<18.5?'Underweight':v<25?'Normal':v<30?'Overweight':'Obese';
-r.innerText='BMI: '+v.toFixed(1)+' ('+category+')';
-}
-function password(){
-let n=Number(document.getElementById('length').value);
-if(!Number.isInteger(n)||n<8||n>64){document.getElementById('passResult').innerText='Choose 8 to 64';return}
-let chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
-let p='';
-let a=new Uint32Array(n);
-crypto.getRandomValues(a);
-for(let x of a)p+=chars[x%chars.length];
-document.getElementById('passResult').innerText=p;
-}
-function copyPass(){
-let p=document.getElementById('passResult').innerText;
-if(p)navigator.clipboard.writeText(p).then(()=>alert('Password copied!')).catch(()=>alert('Copy not available'));
-}
-</script>
+  <div class="container">
+
+    <!-- 1. Age Calculator -->
+    <div class="card">
+      <h2>🎂 Age Calculator</h2>
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob">
+      <button onclick="calculateAge()">Calculate Age</button>
+      <div class="result" id="ageResult"></div>
+    </div>
+
+    <!-- 2. BMI Calculator -->
+    <div class="card">
+      <h2>⚖️ BMI Calculator</h2>
+      <label for="weight">Weight (kg)</label>
+      <input type="number" id="weight" placeholder="Enter weight">
+      <label for="height">Height (cm)</label>
+      <input type="number" id="height" placeholder="Enter height">
+      <button onclick="calculateBMI()">Calculate BMI</button>
+      <div class="result" id="bmiResult"></div>
+    </div>
+
+    <!-- 3. Password Generator -->
+    <div class="card">
+      <h2>🔐 Password Generator</h2>
+      <label for="passLength">Password Length</label>
+      <input type="number" id="passLength" value="12" min="4" max="50">
+      <button onclick="generatePassword()">Generate Password</button>
+      <div class="result" id="passResult"></div>
+    </div>
+
+    <!-- 4. QR Code Generator -->
+    <div class="card">
+      <h2>📱 QR Code Generator</h2>
+      <label for="qrText">Enter Text or Website Link</label>
+      <input type="text" id="qrText" placeholder="https://example.com or any text">
+      <button onclick="generateQR()">Generate QR Code</button>
+      <div id="qrContainer">
+        <img id="qrImage" src="" alt="QR Code">
+      </div>
+    </div>
+
+    <!-- 5. Word & Character Counter -->
+    <div class="card">
+      <h2>📝 Word & Character Counter</h2>
+      <label for="textInput">Type or Paste Your Text</label>
+      <textarea id="textInput" rows="4" placeholder="Write something here..." oninput="countWords()"></textarea>
+      <div class="result" id="wordResult" style="display: block;">Words: 0 | Characters: 0</div>
+    </div>
+
+    <!-- 6. Discount Calculator -->
+    <div class="card">
+      <h2>🏷️ Discount Calculator</h2>
+      <label for="originalPrice">Original Price</label>
+      <input type="number" id="originalPrice" placeholder="Enter price (e.g. 1000)">
+      <label for="discountPercent">Discount (%)</label>
+      <input type="number" id="discountPercent" placeholder="Enter discount % (e.g. 20)">
+      <button onclick="calculateDiscount()">Calculate Discount</button>
+      <div class="result" id="discountResult"></div>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2026 KajerboxBD. All rights reserved.
+  </footer>
+
+  <script>
+    // 1. Age Calculator
+    function calculateAge() {
+      const dobInput = document.getElementById('dob').value;
+      const resultDiv = document.getElementById('ageResult');
+      if (!dobInput) {
+        alert("Please select your Date of Birth!");
+        return;
+      }
+      const dob = new Date(dobInput);
+      const today = new Date();
+      let years = today.getFullYear() - dob.getFullYear();
+      let months = today.getMonth() - dob.getMonth();
+      let days = today.getDate() - dob.getDate();
+
+      if (days < 0) {
+        months--;
+        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+      resultDiv.style.display = 'block';
+      resultDiv.innerText = `Age: ${years} Years, ${months} Months, ${days} Days`;
+    }
+
+    // 2. BMI Calculator
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const resultDiv = document.getElementById('bmiResult');
+      if (!weight || !height || weight <= 0 || height <= 0) {
+        alert("Please enter valid weight and height!");
+        return;
+      }
+      const bmi = (weight / (height * height)).toFixed(2);
+      let status = "";
+      if (bmi < 18.5) status = "Underweight";
+      else if (bmi < 24.9) status = "Normal Weight";
+      else if (bmi < 29.9) status = "Overweight";
+      else status = "Obese";
+
+      resultDiv.style.display = 'block';
+      resultDiv.innerText = `Your BMI: ${bmi} (${status})`;
+    }
+
+    // 3. Password Generator
+    function generatePassword() {
+      const length = parseInt(document.getElementById('passLength').value);
+      const resultDiv = document.getElementById('passResult');
+      if (!length || length < 4) {
+        alert("Password length must be at least 4!");
+        return;
+      }
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+      let password = "";
+      for (let i = 0; i < length; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      resultDiv.style.display = 'block';
+      resultDiv.innerText = `Generated Password: ${password}`;
+    }
+
+    // 4. QR Code Generator
+    function generateQR() {
+      const text = document.getElementById('qrText').value.trim();
+      const qrContainer = document.getElementById('qrContainer');
+      const qrImage = document.getElementById('qrImage');
+      if (!text) {
+        alert("Please enter some text or a link!");
+        return;
+      }
+      qrImage.src = `https://qrserver.com{encodeURIComponent(text)}`;
+      qrContainer.style.display = 'block';
+    }
+
+    // 5. Word & Character Counter
+    function countWords() {
+      const text = document.getElementById('textInput').value;
+      const charCount = text.length;
+      const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+      document.getElementById('wordResult').innerText = `Words: ${wordCount} | Characters: ${charCount}`;
+    }
+
+    // 6. Discount Calculator
+    function calculateDiscount() {
+      const price = parseFloat(document.getElementById('originalPrice').value);
+      const discount = parseFloat(document.getElementById('discountPercent').value);
+      const resultDiv = document.getElementById('discountResult');
+      if (isNaN(price) || isNaN(discount) || price < 0 || discount < 0) {
+        alert("Please enter valid price and discount percentage!");
+        return;
+      }
+      const saved = (price * discount) / 100;
+      const finalPrice = price - saved;
+      resultDiv.style.display = 'block';
+      resultDiv.innerText = `Final Price: ${finalPrice.toFixed(2)} (You Save: ${saved.toFixed(2)})`;
+    }
+  </script>
+
 </body>
 </html>
