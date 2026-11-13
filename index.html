@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KajerBox - Free Online Tools</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#18243a}
+header{background:#172b4d;color:white;padding:24px 16px;text-align:center}
+header h1{font-size:32px;margin:8px}
+header p{color:#dbeafe}
+main{max-width:850px;margin:25px auto;padding:12px}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{background:white;padding:20px;border-radius:14px;box-shadow:0 3px 15px #0001}
+.card h2{font-size:20px;color:#2456a6}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccd5e1;border-radius:8px;font-size:16px}
+button{background:#2456a6;color:white;border:0;padding:12px 16px;border-radius:8px;cursor:pointer;font-size:15px;width:100%;margin-top:8px}
+.result{font-weight:bold;color:#087c52;margin-top:12px;overflow-wrap:anywhere}
+footer{text-align:center;padding:25px;color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h1>🧰 KajerBox</h1>
+<p>Free Online Tools for Everyone</p>
+<p>সহজ অনলাইন টুলস, এক জায়গায়</p>
+</header>
+<main>
+<h2>Our Free Tools</h2>
+<div class="tools">
+<section class="card">
+<h2>🎂 Age Calculator</h2>
+<label>Date of Birth</label>
+<input type="date" id="dob">
+<button onclick="age()">Calculate Age</button>
+<div class="result" id="ageResult"></div>
+</section>
+
+<section class="card">
+<h2>⚖️ BMI Calculator</h2>
+<label>Weight (kg)</label>
+<input type="number" id="weight" placeholder="Enter weight">
+<label>Height (cm)</label>
+<input type="number" id="height" placeholder="Enter height">
+<button onclick="bmi()">Calculate BMI</button>
+<div class="result" id="bmiResult"></div>
+</section>
+
+<section class="card">
+<h2>🔐 Password Generator</h2>
+<label>Password Length</label>
+<input type="number" id="length" value="12" min="8" max="64">
+<button onclick="password()">Generate Password</button>
+<div class="result" id="passResult"></div>
+<button onclick="copyPass()">Copy Password</button>
+</section>
+</div>
+</main>
+<footer>© 2026 KajerBox | All Rights Reserved</footer>
+<script>
+function age(){
+let d=document.getElementById('dob').value;
+if(!d){document.getElementById('ageResult').innerText='Select your birth date';return}
+let b=new Date(d+'T00:00:00'),t=new Date();
+if(b>t){document.getElementById('ageResult').innerText='Invalid date';return}
+let y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),day=t.getDate()-b.getDate();
+if(day<0){m--;day+=new Date(t.getFullYear(),t.getMonth(),0).getDate()}
+if(m<0){y--;m+=12}
+document.getElementById('ageResult').innerText=y+' Years, '+m+' Months, '+day+' Days';
+}
+function bmi(){
+let w=Number(document.getElementById('weight').value);
+let h=Number(document.getElementById('height').value)/100;
+let r=document.getElementById('bmiResult');
+if(w<=0||h<=0){r.innerText='Enter valid measurements';return}
+let v=w/(h*h);
+let category=v<18.5?'Underweight':v<25?'Normal':v<30?'Overweight':'Obese';
+r.innerText='BMI: '+v.toFixed(1)+' ('+category+')';
+}
+function password(){
+let n=Number(document.getElementById('length').value);
+if(!Number.isInteger(n)||n<8||n>64){document.getElementById('passResult').innerText='Choose 8 to 64';return}
+let chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+let p='';
+let a=new Uint32Array(n);
+crypto.getRandomValues(a);
+for(let x of a)p+=chars[x%chars.length];
+document.getElementById('passResult').innerText=p;
+}
+function copyPass(){
+let p=document.getElementById('passResult').innerText;
+if(p)navigator.clipboard.writeText(p).then(()=>alert('Password copied!')).catch(()=>alert('Copy not available'));
+}
+</script>
+</body>
+</html>
