@@ -1,9 +1,30 @@
+চমৎকার সিদ্ধান্ত! আমরা প্রথমে ৩ নম্বর ধাপ (আরও নতুন টুল যোগ করা) সম্পন্ন করব এবং তারপর ১ নম্বর ধাপ (গুগল সার্চে ওয়েবসাইট যুক্ত করা) করব। কারণ, গুগলে সাবমিট করার আগে ওয়েবসাইটটি সম্পূর্ণ গুছিয়ে নিলে ভালো ফলাফল পাওয়া যায়।
+
+ধাপ ১: আরও ৩টি নতুন ও জনপ্রিয় টুল যোগ করা
+
+নিচের আপডেট করা কোডে আগের ৬টি টুলের সাথে আরও ৩টি অত্যন্ত দরকারি টুল যুক্ত করা হয়েছে (মোট ৯টি টুল):
+• EMI / Loan Calculator (ব্যাংক লোন বা কিস্তির মাসিক হিসাব বের করার টুল)
+• Percentage Calculator (যেকোনো সংখ্যার শতকরা বা পার্সেন্টেজ হিসাব করার টুল)
+• Unit Converter (মিটার থেকে ফুট বা কেজি থেকে পাউন্ড রূপান্তর করার টুল)
+
+নতুন কোডটি যুক্ত করার নিয়ম
+
+• নিচের সম্পূর্ণ কোডটি কপি করুন।
+• আগের মতোই GitHub-এ গিয়ে kajerbox রিপোজিটরির index.html ফাইলটি ওপেন করুন।
+• ডানদিকের তিন ডট (•••) আইকনে ক্লিক করে In place সিলেক্ট করুন।
+• পুরনো সব কোড সিলেক্ট করে মুছে ফেলুন এবং নিচের নতুন কোডটি পেস্ট করুন।
+• সবশেষে সবুজ রঙের Commit changes বাটনে ক্লিক করে সেভ করুন।
+
+কপি করার জন্য সম্পূর্ণ কোড (index.html)
+
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kajerbox - Free Online Everyday Tools</title>
+  <meta name="description" content="Kajerbox offers free online everyday tools including Age Calculator, BMI Calculator, Password Generator, QR Code Generator, EMI Calculator, and more.">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -52,7 +73,7 @@
       margin-bottom: 5px;
       font-size: 14px;
     }
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
       margin: 5px 0 15px;
@@ -61,6 +82,7 @@
       box-sizing: border-box;
       font-size: 15px;
       font-family: inherit;
+      background-color: white;
     }
     button {
       width: 100%;
@@ -174,6 +196,46 @@
       <div class="result" id="discountResult"></div>
     </div>
 
+    <!-- 7. EMI / Loan Calculator -->
+    <div class="card">
+      <h2>🏦 EMI / Loan Calculator</h2>
+      <label for="loanAmount">Loan Amount</label>
+      <input type="number" id="loanAmount" placeholder="Enter loan amount (e.g. 100000)">
+      <label for="interestRate">Annual Interest Rate (%)</label>
+      <input type="number" id="interestRate" placeholder="Enter interest rate (e.g. 9)">
+      <label for="loanMonths">Loan Tenure (Months)</label>
+      <input type="number" id="loanMonths" placeholder="Enter months (e.g. 12)">
+      <button onclick="calculateEMI()">Calculate EMI</button>
+      <div class="result" id="emiResult"></div>
+    </div>
+
+    <!-- 8. Percentage Calculator -->
+    <div class="card">
+      <h2>📊 Percentage Calculator</h2>
+      <label for="percentVal">What is (%)</label>
+      <input type="number" id="percentVal" placeholder="Enter percentage (e.g. 15)">
+      <label for="totalVal">Of Number</label>
+      <input type="number" id="totalVal" placeholder="Enter total number (e.g. 500)">
+      <button onclick="calculatePercentage()">Calculate Percentage</button>
+      <div class="result" id="percentResult"></div>
+    </div>
+
+    <!-- 9. Unit Converter -->
+    <div class="card">
+      <h2>📏 Unit Converter</h2>
+      <label for="unitType">Conversion Type</label>
+      <select id="unitType">
+        <option value="mToFt">Meters to Feet</option>
+        <option value="ftToM">Feet to Meters</option>
+        <option value="kgToLb">Kilograms (kg) to Pounds (lb)</option>
+        <option value="lbToKg">Pounds (lb) to Kilograms (kg)</option>
+      </select>
+      <label for="unitInput">Enter Value</label>
+      <input type="number" id="unitInput" placeholder="Enter value to convert">
+      <button onclick="convertUnit()">Convert</button>
+      <div class="result" id="unitResult"></div>
+    </div>
+
   </div>
 
   <footer>
@@ -260,26 +322,75 @@
     // 5. Word & Character Counter
     function countWords() {
       const text = document.getElementById('textInput').value;
-      const charCount = text.length;
-      const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
-      document.getElementById('wordResult').innerText = `Words: ${wordCount} | Characters: ${charCount}`;
-    }
-
-    // 6. Discount Calculator
-    function calculateDiscount() {
-      const price = parseFloat(document.getElementById('originalPrice').value);
-      const discount = parseFloat(document.getElementById('discountPercent').value);
-      const resultDiv = document.getElementById('discountResult');
-      if (isNaN(price) || isNaN(discount) || price < 0 || discount < 0) {
-        alert("Please enter valid price and discount percentage!");
-        return;
-      }
-      const saved = (price * discount) / 100;
-      const finalPrice = price - saved;
-      resultDiv.style.display = 'block';
-      resultDiv.innerText = `Final Price: ${finalPrice.toFixed(2)} (You Save: ${saved.toFixed(2)})`;
-    }
-  </script>
-
+Use code with caution.
+const charCount = text.length;
+const wordCount = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+document.getElementById('wordResult').innerText = Words: ${wordCount} | Characters: ${charCount};
+}
+// 6. Discount Calculator
+function calculateDiscount() {
+const price = parseFloat(document.getElementById('originalPrice').value);
+const discount = parseFloat(document.getElementById('discountPercent').value);
+const resultDiv = document.getElementById('discountResult');
+if (isNaN(price) || isNaN(discount) || price < 0 || discount < 0) {
+alert("Please enter valid price and discount percentage!");
+return;
+}
+const saved = (price * discount) / 100;
+const finalPrice = price - saved;
+resultDiv.style.display = 'block';
+resultDiv.innerText = Final Price: ${finalPrice.toFixed(2)} (You Save: ${saved.toFixed(2)});
+}
+// 7. EMI Calculator
+function calculateEMI() {
+const p = parseFloat(document.getElementById('loanAmount').value);
+const annualRate = parseFloat(document.getElementById('interestRate').value);
+const n = parseFloat(document.getElementById('loanMonths').value);
+const resultDiv = document.getElementById('emiResult');
+if (!p || isNaN(annualRate) || !n || p <= 0 || n <= 0) {
+alert("Please enter valid loan details!");
+return;
+}
+let emi = 0;
+if (annualRate === 0) {
+emi = p / n;
+} else {
+const r = annualRate / 12 / 100;
+emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+const totalPayment = emi * n;
+resultDiv.style.display = 'block';
+resultDiv.innerText = Monthly EMI: ${emi.toFixed(2)} | Total Payment: ${totalPayment.toFixed(2)};
+}
+// 8. Percentage Calculator
+function calculatePercentage() {
+const percent = parseFloat(document.getElementById('percentVal').value);
+const total = parseFloat(document.getElementById('totalVal').value);
+const resultDiv = document.getElementById('percentResult');
+if (isNaN(percent) || isNaN(total)) {
+alert("Please enter valid numbers!");
+return;
+}
+const ans = (percent / 100) * total;
+resultDiv.style.display = 'block';
+resultDiv.innerText = ${percent}% of ${total} = ${ans.toFixed(2)};
+}
+// 9. Unit Converter
+function convertUnit() {
+const type = document.getElementById('unitType').value;
+const val = parseFloat(document.getElementById('unitInput').value);
+const resultDiv = document.getElementById('unitResult');
+if (isNaN(val)) {
+alert("Please enter a value!");
+return;
+}
+let res = "";
+if (type === "mToFt") res = ${val} Meters = ${(val * 3.28084).toFixed(2)} Feet;
+else if (type === "ftToM") res = ${val} Feet = ${(val / 3.28084).toFixed(2)} Meters;
+else if (type === "kgToLb") res = ${val} kg = ${(val * 2.20462).toFixed(2)} lb;
+else if (type === "lbToKg") res = ${val} lb = ${(val / 2.20462).toFixed(2)} kg;
+resultDiv.style.display = 'block';
+resultDiv.innerText = res;
+    }  </script>
 </body>
 </html>
